@@ -52,3 +52,15 @@ docs/_build/
 
 # PyBuilder
 target/
+
+*~
+.ipynb_checkpoints/
+
+presentation.aux
+presentation.nav
+presentation.out
+presentation.pdf
+presentation.snm
+presentation.tex
+presentation.toc
+presentation.vrb
