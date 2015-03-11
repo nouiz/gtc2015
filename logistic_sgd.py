@@ -186,10 +186,11 @@ def load_data(dataset):
                 os.path.split(__file__)[0],
                 "..",
                 "data",
-                dataset
             )
-            if os.path.isfile(new_path) or data_file == 'mnist.pkl.gz':
-                dataset = new_path
+            if os.path.isdir(new_path):
+                new_path = os.path.join(new_path, dataset)
+                if os.path.isfile(new_path) or data_file == 'mnist.pkl.gz':
+                    dataset = new_path
 
     if (not os.path.isfile(dataset)) and data_file == 'mnist.pkl.gz':
         import urllib
