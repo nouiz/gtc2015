@@ -56,9 +56,9 @@ target/
 *~
 .ipynb_checkpoints/
 
-presentation.aux
-presentation.nav
-presentation.out
-presentation.snm
-presentation.toc
-presentation.vrb
+*.aux
+*.nav
+*.out
+*.snm
+*.toc
+*.vrb
