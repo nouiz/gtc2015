@@ -50,15 +50,25 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
 \end{frame}
 
 \begin{frame}{High level}\setcounter{page}{1}
-  Python <- \{NumPy/SciPy/libgpuarray\} <- Theano <- Pylearn2
+  Python <- \{NumPy/SciPy/libgpuarray\} <- Theano <- \{...\}
   \begin{itemize}
   \item Python: OO coding language
   \item Numpy: $n$-dimensional array object and scientific computing toolbox
   \item SciPy: sparse matrix objects and more scientific computing functionality
   \item libgpuarray: GPU $n$-dimensional array object in C for CUDA and OpenCL
   \item Theano: compiler/symbolic graph manipulation
-  \item Pylearn2: machine learning framework for researchers
   \end{itemize}
+\end{frame}
+
+\begin{frame}{High level (2)}\setcounter{page}{1}
+  Theano <- \{Pylearn2, blocks, PyMC 3, lasagne, sklearn-theano, theano-rnn, Morb, ...\}
+  \newline
+  \newline
+  \newline
+  Many machine learning library build on top of Theano
+  \newline
+  \newline
+  sklearn-theano: Easy deep learning by combining Theano and sklearn.
 \end{frame}
 
 %% \begin{frame}{Others}
