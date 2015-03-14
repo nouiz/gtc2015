@@ -193,9 +193,9 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
     \item Mature: Theano has been developed and used since January 2008 (7 yrs old)
     \item Driven hundreds research papers
     \item Good user documentation
-    \item Active mailing list with participants from outside our lab
+    \item Active mailing list with participants from outside our institute
     \item Core technology for a few Silicon-Valley start-ups
-    \item Many contributors (some from outside our lab)
+    \item Many contributors (some from outside our institute)
     \item Used to teach many university classes
     \item Has been used for research at big compagnies
   \end{itemize}
@@ -541,44 +541,23 @@ modes regard as fine.
 \includegraphics[width=0.75\textwidth]{pics/theano_grad.png}
 \end{frame}
 
-%% \begin{frame}{Theano Variables}
-%%   \begin{itemize}
-%%   \item A Variable is a theano expression
-%%   \item Can come from T.scalar, T.matrix, etc.
-%%   \item Can come from doing operations on other Variables
-%%   \item Every Variable has a type field, identifying its Type \newline
-%%     e.g. TensorType((True, False), ‘float32’)
-%%   \item Variables can be thought of as nodes in a graph
-%%   \end{itemize}
-%% \end{frame}
+\begin{frame}[fragile]
+  \frametitle{The grad method}
 
-%% \begin{frame}{Ops}
-
-%%   \begin{itemize}
-%%   \item  An Op is any class that describes a
-%% mathematical function of some variables
-%%   \item Can call the op on some variables to get a
-%% new variable or variables
-%%   \item An Op class can supply other forms of
-%% information about the function, such as its
-%% derivatives
-%%   \end{itemize}
-%% \end{frame}
-
-%% \begin{frame}{Apply nodes}
-%%   \begin{itemize}
-%%   \item The Apply class is a specific instance of an application of an Op
-%%   \item Notable fields:
-%%     \begin{itemize}
-%%     \item op: The Op to be applied
-%%     \item inputs: The Variables to be used as input
-%%     \item outputs: The Variables produced
-%%     \end{itemize}
-%%   \item Variable.owner identifies the Apply that created the variable
-%%   \item Variable and Apply instances are nodes and owner/
-%%     inputs/outputs identify edges in a Theano graph
-%%   \end{itemize}
-%% \end{frame}
+\lstset{language=Python,
+        commentstyle=\itshape\color{blue},
+        stringstyle=\color{violet},
+        }
+\begin{lstlisting}
+>>> x = T.scalar('x')
+>>> y = 2. * x
+>>> g = T.grad(y, x)
+>>> f = theano.function([x], g)
+# Print the optimized graph
+>>> theano.printing.pydotprint(f)
+\end{lstlisting}
+\includegraphics[width=0.4\textwidth]{pics/theano_grad_opt.png}
+\end{frame}
 
 \begin{frame}{Others}
   \begin{itemize}
@@ -973,6 +952,15 @@ result, updates = theano.scan(
 \end{frame}
 
 \section{Exercices}
+\begin{frame}{ipython notebook}
+\begin{itemize}
+\item Introduction
+\item Exercices (Theano only exercices)
+\item lenet (LeNet5 model to quickly play with a CNN)
+\end{itemize}
+\end{frame}
+
+
 \begin{frame}{Connection instructions}
 \begin{itemize}
 \item Navigate to \url{nvlabs.qwiklab.com}
@@ -987,7 +975,7 @@ result, updates = theano.scan(
 
 \begin{frame}{Acknowledgments}
 \begin{itemize}
-\item All people working or having worked at the LISA lab.
+\item All people working or having worked at the LISA lab/MILA institute
 \item All Theano users/contributors
 \item Compute Canada, RQCHP, NSERC, and Canada Research Chairs for providing funds or access to compute resources.
 \end{itemize}
