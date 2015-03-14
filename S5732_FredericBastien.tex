@@ -61,14 +61,17 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
 \end{frame}
 
 \begin{frame}{High level (2)}
-  Theano <- \{Pylearn2, blocks, PyMC 3, lasagne, sklearn-theano, theano-rnn, Morb, ...\}
-  \newline
-  \newline
-  \newline
   Many machine learning library build on top of Theano
-  \newline
-  \newline
-  sklearn-theano: Easy deep learning by combining Theano and sklearn.
+  \begin{itemize}
+  \item Pylearn2
+  \item blocks
+  \item PyMC 3
+  \item lasagne
+  \item sklearn-theano: Easy deep learning by combining Theano and sklearn.
+  \item theano-rnn
+  \item Morb
+  \item ...
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Some models build with Theano}
@@ -105,8 +108,8 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
   \item Emphasizes code readability
   \item Comprehensive standard library
   \item Dynamic type and memory management
-  \item Slow execution
   \item Easily extensible with C
+  \item Slow execution
   \item Popular in {\em web development}\ and {\em scientific communities}
   \end{itemize}
 \end{frame}
@@ -177,15 +180,15 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
     \item Compiles most common expressions to C for CPU and/or GPU
     \item Limited expressivity means more opportunities for optimizations
     \begin{itemize}
-      \item No subroutines -> global optimization
       \item Strongly typed -> compiles to C
       \item Array oriented -> easy parallelism
       \item Support for looping and branching in expressions
+      \item No subroutines -> global optimization
     \end{itemize}
-    \item Automatic speed and stability optimizations
-    \item Can reuse other technologies for best performance.
+    \item Automatic speed and numerical stability optimizations
+    \item Can reuse other technologies for best performance
     \begin{itemize}
-      \item BLAS, SciPy, Cython, Numba, PyCUDA, CUDA, ...
+      \item BLAS, SciPy, CUDA, PyCUDA, Cython, Numba, PyCUDA, ...
     \end{itemize}
     \item Automatic differentiation and R op
     \item Sparse matrices (CPU only)
@@ -221,7 +224,7 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
     \item Driven hundreds research papers
     \item Good user documentation
     \item Active mailing list with participants from outside our institute
-    \item Core technology for a few Silicon-Valley start-ups
+    \item Core technology for Silicon-Valley start-ups
     \item Many contributors (some from outside our institute)
     \item Used to teach many university classes
     \item Has been used for research at big compagnies
@@ -300,8 +303,8 @@ import theano
 from theano import tensor as T
 x = T.scalar()
 y = T.scalar()
-z = x+y
-w = z*x
+z = x + y
+w = z * x
 a = T.sqrt(w)
 b = T.exp(a)
 c = a ** b
@@ -602,11 +605,30 @@ modes regard as fine.
   \item Theano current back-end only supports 32 bit on GPU
   \item libgpuarray (new-backend) support all dtype
   \item CUDA supports 64 bit, but is slow on gamer GPUs
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{GPU: Theano flags}
+  Theano flags allow to configure Theano. Can be set via a
+  configuration file or an environment variable.
+
+  To enable GPU:
+  \begin{itemize}
+  \item Set ``device=gpu'' (or a specific gpu, like ``gpu0'')
+  \item Set ``floatX=float32''
+  \item Optional: warn\_float64=\{'ignore', 'warn', 'raise', 'pdb'\}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{floatX}
+  Allow to change the dtype between float32 and float64.
+  \begin{itemize}
   \item T.fscalar, T.fvector, T.fmatrix are all 32 bit
-  \item T.scalar, T.vector, T.matrix resolve to 32 bit or 64 bit depending on theano’s floatX flag
-  \item floatX is float64 by default, set it to float32
-  \item Set device flag to gpu (or a specific gpu, like gpu0)
-  \item Flag: warn\_float64={'ignore', 'warn', 'raise', 'pdb'}
+  \item T.dscalar, T.dvector, T.dmatrix are all 64 bit
+  \item T.scalar, T.vector, T.matrix resolve to floatX
+  \item floatX is float64 by default, set it to float32 for GPU
   \end{itemize}
 \end{frame}
 
@@ -614,7 +636,7 @@ modes regard as fine.
   \begin{itemize}
   \item R1 and R2 is supported.
   \item It is enabled automatically if available.
-  \item Theano flag to get error if can't be used: ``optimizer\_including=cudnn''
+  \item Theano flag to get an error if can't be used: ``optimizer\_including=cudnn''
   \end{itemize}
 \end{frame}
 
@@ -690,23 +712,6 @@ for a debugprint of this apply node.
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Error message: exception\_verbosity=high}
-
-\lstset{language=Python,
-        commentstyle=\itshape\color{blue},
-        stringstyle=\color{violet},
-        basicstyle=\scriptsize,
-        xleftmargin=-1em
-        }
-\begin{lstlisting}
-Debugprint of the apply node:
-Elemwise{add,no_inplace} [@A] <TensorType(float64, vector)> ''
- |<TensorType(float64, vector)> [@B] <TensorType(float64, vector)>
- |<TensorType(float64, vector)> [@C] <TensorType(float64, vector)>
- |<TensorType(float64, vector)> [@C] <TensorType(float64, vector)>
-\end{lstlisting}
-\end{frame}
 
 \begin{frame}[fragile]
   \frametitle{Error message: optimizer=fast\_compile}
@@ -722,6 +727,7 @@ Backtrace when the node is created:
 
 \end{lstlisting}
 \end{frame}
+
 
 \begin{frame}[fragile]
   \frametitle{Error message: Traceback}
@@ -742,7 +748,6 @@ Traceback (most recent call last):
   File "/u/bastienf/repos/theano/compile/function_module.py",
        line 579, in __call__
     outputs = self.fn()
-
 \end{lstlisting}
 \end{frame}
 
@@ -983,7 +988,7 @@ result, updates = theano.scan(
 \begin{itemize}
 \item Introduction
 \item Exercices (Theano only exercices)
-\item lenet (LeNet5 model to quickly play with a CNN)
+\item lenet (small CNN model to quickly try it)
 \end{itemize}
 \end{frame}
 
