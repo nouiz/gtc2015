@@ -15,3 +15,6 @@ g = e + f
 h = g / c
 fn = function([a], h)
 fn(np.ones((3,)).astype(a.dtype))
+
+# Reset it to default behavior for following exercices
+config.compute_test_value = 'off'
