@@ -3,8 +3,6 @@ import numpy
 import theano
 import theano.tensor as tt
 
-theano.config.warn.subtensor_merge_bug = False
-
 coefficients = tt.vector("coefficients")
 x = tt.scalar("x")
 max_coefficients_supported = 10000
