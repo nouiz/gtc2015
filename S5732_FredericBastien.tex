@@ -75,7 +75,7 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
 \end{frame}
 
 \begin{frame}{Some models build with Theano}
-  Just a few models that have been build with Theano.
+  Some models that have been build with Theano.
   \begin{itemize}
   \item Neural Networks
   \item Convolutional Neural Networks
@@ -116,10 +116,10 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
 
 \begin{frame}{NumPy/SciPy}
   \begin{itemize}
-  \item Python floats are full-fledged objects on the heap
-      \begin{itemize}
-      \item Not suitable for high-performance computing!
-      \end{itemize}
+%  \item Python floats are full-fledged objects on the heap
+%      \begin{itemize}
+%      \item Not suitable for high-performance computing!
+%      \end{itemize}
 
   \item NumPy provides an $n$-dimensional numeric array in Python
       \begin{itemize}
@@ -186,13 +186,20 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
       \item No subroutines -> global optimization
     \end{itemize}
     \item Automatic speed and numerical stability optimizations
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Description (2)}
+
+  \begin{itemize}
+    \item Automatic differentiation and R op
+    \item Sparse matrices (CPU only)
     \item Can reuse other technologies for best performance
     \begin{itemize}
       \item BLAS, SciPy, CUDA, PyCUDA, Cython, Numba, PyCUDA, ...
     \end{itemize}
-    \item Automatic differentiation and R op
-    \item Sparse matrices (CPU only)
     \item Extensive unit-testing and self-verification
+    \item Extensible (You can create new operation as needed)
     \item Works on Linux, OS X and Windows
   \end{itemize}
 \end{frame}
@@ -278,6 +285,7 @@ print f([0, 1, 2])
 
 %\subsection{Operations}
 \begin{frame}{Overview Language}
+  Mostly all of NumPy and more!
   \begin{itemize}
   \item Operations on scalar, vector, matrix, tensor, and sparse variables
   \item Linear algebra
@@ -286,7 +294,6 @@ print f([0, 1, 2])
   \item Indexing, slicing and advanced indexing.
   \item Reduction
   \item Dimshuffle (n-dim transpose)
-  \item Extensible
   \end{itemize}
 \end{frame}
 
