@@ -847,6 +847,207 @@ Elemwise{mul,no_inplace} [@A] ''
 %%   \end{itemize}
 %% \end{frame}
 
+
+\section{Model}
+\subsection{Logistic Regression}
+\begin{frame}
+  \tableofcontents[currentsection]
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Inputs}
+\lstset{language=Python,
+        commentstyle=\itshape\color{blue},
+        stringstyle=\color{violet},
+        }
+\begin{lstlisting}
+# Load from disk and put in shared variable.
+datasets = load_data(dataset)
+train_set_x, train_set_y = datasets[0]
+valid_set_x, valid_set_y = datasets[1]
+
+# allocate symbolic variables for the data
+index = T.lscalar()  # index to a [mini]batch
+
+# generate symbolic variables for input minibatch
+x = T.matrix('x')  # data, 1 row per image
+y = T.ivector('y')  # labels
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Model}
+\lstset{language=Python,
+        commentstyle=\itshape\color{blue},
+        stringstyle=\color{violet},
+        }
+\begin{lstlisting}
+n_in = 28 * 28
+n_out = 10
+
+# weights
+W = theano.shared(
+        numpy.zeros((n_in, n_out),
+                    dtype=theano.config.floatX))
+
+# bias
+b = theano.shared(
+        numpy.zeros((n_out,),
+                    dtype=theano.config.floatX))
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Computation}
+\lstset{language=Python,
+        commentstyle=\itshape\color{blue},
+        stringstyle=\color{violet},
+        }
+\begin{lstlisting}
+# the forward pass
+p_y_given_x = T.nnet.softmax(T.dot(input, W) + b)
+
+# cost we minimize: the negative log likelihood
+l = T.log(p_y_given_x)
+cost = -T.mean(l[T.arange(y.shape[0]), y])
+
+# the error
+y_pred = T.argmax(p_y_given_x, axis=1)
+err = T.mean(T.neq(y_pred, y))
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Gradient and Updates}
+\lstset{language=Python,
+        commentstyle=\itshape\color{blue},
+        stringstyle=\color{violet},
+        }
+\begin{lstlisting}
+# compute the gradient of cost
+g_W, g_b = T.grad(cost=cost, wrt=(W, b))
+
+# model parameters updates rules
+updates = [(W, W - learning_rate * g_W),
+           (b, b - learning_rate * g_b)]
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Training Function}
+\lstset{language=Python,
+        commentstyle=\itshape\color{blue},
+        stringstyle=\color{violet},
+        }
+\begin{lstlisting}
+# compile a Theano function that train the model
+train_model = theano.function(
+    inputs=[index], outputs=(cost, err),
+    updates=updates,
+    givens={
+        x: train_set_x[index * batch_size:
+                       (index + 1) * batch_size],
+        y: train_set_y[index * batch_size:
+                       (index + 1) * batch_size]
+    }
+)
+\end{lstlisting}
+\end{frame}
+
+
+\subsection{Convolution}
+\begin{frame}[fragile]
+  \frametitle{Inputs}
+\lstset{language=Python,
+        commentstyle=\itshape\color{blue},
+        stringstyle=\color{violet},
+        }
+\begin{lstlisting}
+# Load from disk and put in shared variable.
+datasets = load_data(dataset)
+train_set_x, train_set_y = datasets[0]
+valid_set_x, valid_set_y = datasets[1]
+
+# allocate symbolic variables for the data
+index = T.lscalar()  # index to a [mini]batch
+
+x = T.matrix('x')   # the data, 1 row per image
+y = T.ivector('y')  # labels
+
+# Reshape matrix of rasterized images of shape (batch_size, 28 * 28)
+# to a 4D tensor, compatible for convolution
+layer0_input = x.reshape((batch_size, 1, 28, 28))
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Model}
+\lstset{language=Python,
+        commentstyle=\itshape\color{blue},
+        stringstyle=\color{violet},
+        }
+\begin{lstlisting}
+image_shape=(batch_size, 1, 28, 28),
+filter_shape=(nkerns[0], 1, 5, 5),
+poolsize=(2, 2)
+
+W_bound = ...
+W = theano.shared(
+    numpy.asarray(
+        rng.uniform(low=-W_bound, high=W_bound,
+                    size=filter_shape),
+        dtype=theano.config.floatX),
+)
+
+# the bias is a 1D tensor -- one bias per output feature map
+b_values = numpy.zeros((filter_shape[0],),dtype=...
+b = theano.shared(b_values)
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Computation}
+\lstset{language=Python,
+        commentstyle=\itshape\color{blue},
+        stringstyle=\color{violet},
+        }
+\begin{lstlisting}
+# convolve input feature maps with filters
+conv_out = conv.conv2d(
+    input=x,
+    filters=W)
+
+# downsample each feature map individually, using maxpooling
+pooled_out = downsample.max_pool_2d(
+    input=conv_out,
+    ds=poolsize,
+    ignore_border=True)
+
+output = T.tanh(pooled_out +
+                b.dimshuffle('x', 0, 'x', 'x'))
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Logistic Regression: grad}
+\lstset{language=Python,
+        commentstyle=\itshape\color{blue},
+        stringstyle=\color{violet},
+        }
+\begin{lstlisting}
+\end{lstlisting}
+\end{frame}
+
+
+\iffalse
 \subsection{Scan}
 \begin{frame}
   \frametitle{Scan}
@@ -989,8 +1190,13 @@ result, updates = theano.scan(
 \end{itemize}
 
 \end{frame}
+\fi
 
 \section{Exercices}
+\begin{frame}
+  \tableofcontents[currentsection]
+\end{frame}
+
 \begin{frame}{ipython notebook}
 \begin{itemize}
 \item Introduction
