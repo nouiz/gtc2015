@@ -81,12 +81,12 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
   \item Convolutional Neural Networks
   \item RNN, RNN CTC, LSTM
   \item NADE, RNADE
-  \item Auto-encoder
+  \item Autoencoders
   \item Alex Net's
   \item GoogleLeNet
   \item Overfeat
   \item Generative Adverserial Nets
-  \item SVM
+  \item SVMs
   \item \begin{bf}many variations of above models\end{bf}
   \end{itemize}
 \end{frame}
@@ -199,7 +199,7 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
       \item BLAS, SciPy, CUDA, PyCUDA, Cython, Numba, PyCUDA, ...
     \end{itemize}
     \item Extensive unit-testing and self-verification
-    \item Extensible (You can create new operation as needed)
+    \item Extensible (You can create new operations as needed)
     \item Works on Linux, OS X and Windows
   \end{itemize}
 \end{frame}
@@ -285,9 +285,9 @@ print f([0, 1, 2])
 
 %\subsection{Operations}
 \begin{frame}{Overview Language}
-  Mostly all of NumPy and more!
+  Most of NumPy and more!
   \begin{itemize}
-  \item Operations on scalar, vector, matrix, tensor, and sparse variables
+  \item Operations on scalars, vectors, matrices, tensors, and sparse variables
   \item Linear algebra
   \item Element-wise nonlinearities
   \item Convolution
@@ -363,7 +363,7 @@ c = T.dot(x, a)
   Using Theano:
   \begin{itemize}
   \item Dimensionality defined by length of ``broadcastable'' argument
-  \item Can add (or do other elemwise op) on two
+  \item Can add (or do other elemwise op) two
     tensors with same dimensionality
   \item Duplicate tensors along broadcastable axes to make size match
   \end{itemize}
@@ -424,7 +424,7 @@ e = a + d
 \begin{frame}[fragile]
   \frametitle{Indexing}
   As NumPy!
-  This mean all slices, index selection return view
+  This mean slices and index selection return view
 \lstset{language=Python,
         commentstyle=\itshape\color{blue},
         stringstyle=\color{violet},
@@ -482,7 +482,7 @@ array(3.0)
   \item ``shared variables'' add just a little bit of imperative programming
   \item A ``shared variable'' is a buffer that stores a numerical value for a Theano variable
   \item Can write to as many shared variables as you want, once each, at the end of the function
-  \item  Modify outside Theano function with get\_value() and set\_value() methods.
+  \item Can modify value outside of Theano function with get\_value() and set\_value() methods.
   \end{itemize}
 \end{frame}
 
@@ -609,9 +609,9 @@ modes regard as fine.
 \subsection{GPU}
 \begin{frame}{Enabling GPU}
   \begin{itemize}
-  \item Theano current back-end only supports 32 bit on GPU
-  \item libgpuarray (new-backend) support all dtype
-  \item CUDA supports 64 bit, but is slow on gamer GPUs
+  \item Theano's current back-end only supports 32 bit on GPU
+  \item libgpuarray (new-backend) supports all dtype
+  \item CUDA supports 64 bit, but it is slow on gamer GPUs
   \end{itemize}
 \end{frame}
 
@@ -873,7 +873,7 @@ Elemwise{mul,no_inplace} [@A] ''
 
 
 \begin{frame}[fragile,allowframebreaks]
-  \frametitle{Scan Example1: Computing tanh(v.dot(W) + b) * d where b is binomial}
+  \frametitle{Scan Example1: Computing tanh(v.dot(W) + b) * d where d is binomial}
 
 \lstset{language=Python,
         commentstyle=\itshape\color{blue},
@@ -952,8 +952,8 @@ result, updates = theano.scan(
     outputs_info=T.ones_like(A),
     non_sequences=A, n_steps=k)
 
-# Scan provide us with A ** 1 through A ** k.
-# Keep only the last value. Scan optimize memory.
+# Scan provides us with A ** 1 through A ** k.
+# Keep only the last value. Scan optimizes memory.
 final = result[-1]
 
 power = theano.function(inputs=[A, k], outputs=final,
