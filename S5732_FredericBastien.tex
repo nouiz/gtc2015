@@ -17,6 +17,8 @@
 \author{%
 \footnotesize
 Frédéric Bastien \newline
+\newline
+\newline
 Département d'Informatique et de Recherche Opérationnelle \newline
 Université de Montréal \newline
 Montréal, Canada \newline
@@ -61,7 +63,7 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
 \end{frame}
 
 \begin{frame}{High level (2)}
-  Many machine learning library build on top of Theano
+  Many [machine learning] library build on top of Theano
   \begin{itemize}
   \item Pylearn2
   \item blocks
@@ -87,7 +89,7 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
   \item Overfeat
   \item Generative Adverserial Nets
   \item SVMs
-  \item \begin{bf}many variations of above models\end{bf}
+  \item \begin{bf}many variations of above models and more\end{bf}
   \end{itemize}
 \end{frame}
 
@@ -192,7 +194,7 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
 \begin{frame}{Description (2)}
 
   \begin{itemize}
-    \item Automatic differentiation and R op
+    \item Automatic differentiation and R op (Hessian Free Optimization)
     \item Sparse matrices (CPU only)
     \item Can reuse other technologies for best performance
     \begin{itemize}
@@ -274,28 +276,28 @@ print f([0, 1, 2])
 \end{frame}
 
 
-%% \begin{frame}{Overview of Library}
-%%   Theano is many things
-%%   \begin{itemize}
-%%   \item Language
-%%   \item Compiler
-%%   \item Python library
-%%   \end{itemize}
-%% \end{frame}
-
-%\subsection{Operations}
-\begin{frame}{Overview Language}
-  Most of NumPy and more!
+\begin{frame}{Overview of Library}
+  Theano is many things
   \begin{itemize}
-  \item Operations on scalars, vectors, matrices, tensors, and sparse variables
-  \item Linear algebra
-  \item Element-wise nonlinearities
-  \item Convolution
-  \item Indexing, slicing and advanced indexing.
-  \item Reduction
-  \item Dimshuffle (n-dim transpose)
+  \item Language
+  \item Compiler
+  \item Python library
   \end{itemize}
 \end{frame}
+
+%\subsection{Operations}
+%% \begin{frame}{Overview Language}
+%%   Most of NumPy and more!
+%%   \begin{itemize}
+%%   \item Operations on scalars, vectors, matrices, tensors, and sparse variables
+%%   \item Linear algebra
+%%   \item Element-wise nonlinearities
+%%   \item Convolution
+%%   \item Indexing, slicing and advanced indexing.
+%%   \item Reduction
+%%   \item Dimshuffle (n-dim transpose)
+%%   \end{itemize}
+%% \end{frame}
 
 
 \begin{frame}[fragile]
@@ -383,8 +385,12 @@ x = T.tensor3()
 \begin{frame}[fragile]
   \frametitle{Reductions}
 \lstset{language=Python,
-        commentstyle=\itshape\color{blue},
-        stringstyle=\color{violet},
+        commentstyle=\itshape\color{gray},
+        stringstyle=\color{gray},
+        keywordstyle=\color{gray},
+        rulecolor=\color{gray},
+        identifierstyle=\color{gray},
+        basicstyle=\color{gray},
         }
 \begin{lstlisting}
 from theano import tensor as T
@@ -392,6 +398,17 @@ tensor3 = T.TensorType(
     broadcastable=(False, False, False),
     dtype='float32')
 x = tensor3()
+\end{lstlisting}
+
+\lstset{language=Python,
+        commentstyle=\itshape\color{blue},
+        stringstyle=\color{violet},
+        keywordstyle=\color{black},
+        rulecolor=\color{black},
+        identifierstyle=\color{black},
+        basicstyle=\color{black},
+        }
+\begin{lstlisting}
 total = x.sum()
 marginals = x.sum(axis=(0, 2))
 mx = x.max(axis=1)
@@ -402,19 +419,35 @@ mx = x.max(axis=1)
   \frametitle{Dimshuffle}
 
 \lstset{language=Python,
-        commentstyle=\itshape\color{blue},
-        stringstyle=\color{violet},
+        commentstyle=\itshape\color{gray},
+        stringstyle=\color{gray},
+        keywordstyle=\color{gray},
+        rulecolor=\color{gray},
+        identifierstyle=\color{gray},
+        basicstyle=\color{gray},
         }
 \begin{lstlisting}
 from theano import tensor as T
 tensor3 = T.TensorType(
     broadcastable=(False, False, False))
 x = tensor3()
+\end{lstlisting}
+\lstset{language=Python,
+        commentstyle=\itshape\color{blue},
+        stringstyle=\color{violet},
+        keywordstyle=\color{black},
+        rulecolor=\color{black},
+        identifierstyle=\color{black},
+        basicstyle=\color{black},
+        }
+\begin{lstlisting}
 y = x.dimshuffle((2, 1, 0))
 a = T.matrix()
+
 b = a.T
 # Same as b
 c = a.dimshuffle((0, 1))
+
 # Adding to larger tensor
 d = a.dimshuffle((0, 1, 'x'))
 e = a + d
@@ -497,8 +530,7 @@ array(3.0)
 >>> from theano import shared
 >>> x = shared(0.)
 >>> from theano.compat.python2x import OrderedDict
->>> updates = OrderedDict()
->>> updates[x] = x + 1
+>>> updates = [(x, x + 1)]
 >>> f = function([], updates=updates)
 >>> f()
 >>> x.get_value()
@@ -510,22 +542,23 @@ array(3.0)
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}{Which dict?}
-  \begin{itemize}
-  \item Use theano.compat.python2x.OrderedDict
-  \item Not collections.OrderedDict
-  \begin{itemize}
-  \item This isn’t available in older versions of python
-  \end{itemize}
-  \item Not \{\} aka dict
-  \begin{itemize}
-  \item The iteration order of this built-in class is not
-    deterministic (thanks, Python!) so if Theano
-    accepted this, the same script could compile
-    different C programs each time you run it
-  \end{itemize}
-  \end{itemize}
-\end{frame}
+
+%% \begin{frame}{Which dict?}
+%%   \begin{itemize}
+%%   \item Use theano.compat.python2x.OrderedDict
+%%   \item Not collections.OrderedDict
+%%   \begin{itemize}
+%%   \item This isn’t available in older versions of python
+%%   \end{itemize}
+%%   \item Not \{\} aka dict
+%%   \begin{itemize}
+%%   \item The iteration order of this built-in class is not
+%%     deterministic (thanks, Python!) so if Theano
+%%     accepted this, the same script could compile
+%%     different C programs each time you run it
+%%   \end{itemize}
+%%   \end{itemize}
+%% \end{frame}
 
 \begin{frame}{Compilation modes}
   \begin{itemize}
@@ -550,15 +583,13 @@ modes regard as fine.
 
 \subsection{Modifying expressions}
 \begin{frame}{Modifying expressions}
+  There is ``macro'' that automatically build bigger graph for you.
   \begin{itemize}
-  \item The grad method
+  \item theano.grad
   \item Others
-
-%  \item Variable nodes
-%  \item Types
-%  \item Ops
-%  \item Apply nodes
   \end{itemize}
+  Those functions can get called many times, for example to get the 2nd
+  derivative.
 \end{frame}
 
 \begin{frame}[fragile]
@@ -580,17 +611,30 @@ modes regard as fine.
 
 \begin{frame}[fragile]
   \frametitle{The grad method}
-
 \lstset{language=Python,
-        commentstyle=\itshape\color{blue},
-        stringstyle=\color{violet},
+        commentstyle=\itshape\color{gray},
+        stringstyle=\color{gray},
+        keywordstyle=\color{gray},
+        rulecolor=\color{gray},
+        identifierstyle=\color{gray},
+        basicstyle=\color{gray},
         }
 \begin{lstlisting}
 >>> x = T.scalar('x')
 >>> y = 2. * x
 >>> g = T.grad(y, x)
->>> f = theano.function([x], g)
+\end{lstlisting}
+\lstset{language=Python,
+        commentstyle=\itshape\color{blue},
+        stringstyle=\color{violet},
+        keywordstyle=\color{black},
+        rulecolor=\color{black},
+        identifierstyle=\color{black},
+        basicstyle=\color{black},
+        }
+\begin{lstlisting}
 # Print the optimized graph
+>>> f = theano.function([x], g)
 >>> theano.printing.pydotprint(f)
 \end{lstlisting}
 \includegraphics[width=0.4\textwidth]{pics/theano_grad_opt.png}
@@ -598,9 +642,10 @@ modes regard as fine.
 
 \begin{frame}{Others}
   \begin{itemize}
-  \item R\_op, L\_op for hessian free
+  \item R\_op, L\_op for Hessian Free Optimization
   \item hessian
   \item jacobian
+  \item clone the graph with replacement
   \item you can navigate the graph if you need
       (go from the result of computation to its input, recursively)
   \end{itemize}
@@ -703,20 +748,14 @@ Inputs scalar values: ['not scalar', 'not scalar', 'not scalar']
 
 \begin{frame}[fragile]
   \frametitle{Error message: 2st part}
-
-\lstset{language=Python,
-        commentstyle=\itshape\color{blue},
-        stringstyle=\color{violet},
-        basicstyle=\footnotesize
-        }
-\begin{lstlisting}
 HINT: Re-running with most Theano optimization
 disabled could give you a back-traces when this
 node was created. This can be done with by setting
-the Theano flags optimizer=fast_compile
-HINT: Use the Theano flag 'exception_verbosity=high'
+the Theano flags ``optimizer=fast\_compile''. If that does not
+work, Theano optimizations can be disabled with
+``optimizer=None''.\newline
+HINT: Use the Theano flag ``exception\_verbosity=high''
 for a debugprint of this apply node.
-\end{lstlisting}
 \end{frame}
 
 
@@ -848,7 +887,7 @@ Elemwise{mul,no_inplace} [@A] ''
 %% \end{frame}
 
 
-\section{Model}
+\section{Models}
 \subsection{Logistic Regression}
 \begin{frame}
   \tableofcontents[currentsection]
@@ -961,6 +1000,9 @@ train_model = theano.function(
 
 
 \subsection{Convolution}
+\begin{frame}
+  \tableofcontents[currentsection]
+\end{frame}
 \begin{frame}[fragile]
   \frametitle{Inputs}
 \lstset{language=Python,
@@ -995,7 +1037,6 @@ layer0_input = x.reshape((batch_size, 1, 28, 28))
 \begin{lstlisting}
 image_shape=(batch_size, 1, 28, 28),
 filter_shape=(nkerns[0], 1, 5, 5),
-poolsize=(2, 2)
 
 W_bound = ...
 W = theano.shared(
@@ -1020,29 +1061,16 @@ b = theano.shared(b_values)
         }
 \begin{lstlisting}
 # convolve input feature maps with filters
-conv_out = conv.conv2d(
-    input=x,
-    filters=W)
+conv_out = conv.conv2d(input=x, filters=W)
 
 # downsample each feature map individually, using maxpooling
 pooled_out = downsample.max_pool_2d(
     input=conv_out,
-    ds=poolsize,
+    ds=(2, 2),  // poolsize
     ignore_border=True)
 
 output = T.tanh(pooled_out +
                 b.dimshuffle('x', 0, 'x', 'x'))
-\end{lstlisting}
-\end{frame}
-
-
-\begin{frame}[fragile]
-  \frametitle{Logistic Regression: grad}
-\lstset{language=Python,
-        commentstyle=\itshape\color{blue},
-        stringstyle=\color{violet},
-        }
-\begin{lstlisting}
 \end{lstlisting}
 \end{frame}
 
@@ -1218,19 +1246,19 @@ result, updates = theano.scan(
 \end{frame}
 
 
-\begin{frame}{Acknowledgments}
+\begin{frame}{Questions, Acknowledgments}
+\Huge
+\begin{center}
+Questions?
+\end{center}
+
+\normalsize
 \begin{itemize}
 \item All people working or having worked at the LISA lab/MILA institute
 \item All Theano users/contributors
 \item Compute Canada, RQCHP, NSERC, and Canada Research Chairs for providing funds or access to compute resources.
 \end{itemize}
-\end{frame}
 
-\begin{frame}
-\begin{center}
-\Huge
-Questions?
-\end{center}
 \end{frame}
 
 
