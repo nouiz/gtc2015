@@ -583,7 +583,7 @@ modes regard as fine.
 
 \subsection{Modifying expressions}
 \begin{frame}{Modifying expressions}
-  There is ``macro'' that automatically build bigger graph for you.
+  There are ``macro'' that automatically build bigger graph for you.
   \begin{itemize}
   \item theano.grad
   \item Others
@@ -760,22 +760,6 @@ for a debugprint of this apply node.
 
 
 \begin{frame}[fragile]
-  \frametitle{Error message: optimizer=fast\_compile}
-
-\lstset{language=Python,
-        commentstyle=\itshape\color{blue},
-        stringstyle=\color{violet},
-        }
-\begin{lstlisting}
-Backtrace when the node is created:
-  File "test.py", line 7, in <module>
-    z = z + y
-
-\end{lstlisting}
-\end{frame}
-
-
-\begin{frame}[fragile]
   \frametitle{Error message: Traceback}
 
 \lstset{language=Python,
@@ -796,6 +780,23 @@ Traceback (most recent call last):
     outputs = self.fn()
 \end{lstlisting}
 \end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Error message: optimizer=fast\_compile}
+
+\lstset{language=Python,
+        commentstyle=\itshape\color{blue},
+        stringstyle=\color{violet},
+        }
+\begin{lstlisting}
+Backtrace when the node is created:
+  File "test.py", line 7, in <module>
+    z = z + y
+
+\end{lstlisting}
+\end{frame}
+
 
 \begin{frame}[fragile]
   \frametitle{debugprint}
@@ -1249,9 +1250,9 @@ result, updates = theano.scan(
 \begin{frame}{Questions, Acknowledgments}
 \Huge
 \begin{center}
-Questions?
+Questions?\newline
+Acknowledgments
 \end{center}
-
 \normalsize
 \begin{itemize}
 \item All people working or having worked at the LISA lab/MILA institute
